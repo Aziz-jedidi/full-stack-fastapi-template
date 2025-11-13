@@ -8,10 +8,12 @@ services:
   proxy:
     image: traefik:3.0
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - "80:80"
-      - "8090:8080"
+      - "8888:80"
+      - "8091:8080"
+    environment:
+      - DOCKER_API_VERSION=1.44
     # Duplicate the command from docker-compose.yml to add --api.insecure=true
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
@@ -48,7 +50,7 @@ services:
   db:
     restart: "no"
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   adminer:
     restart: "no"
@@ -89,8 +91,8 @@ services:
   mailcatcher:
     image: schickling/mailcatcher
     ports:
-      - "1080:1080"
-      - "1025:1025"
+      - "1081:1080"
+      - "1026:1025"
 
   frontend:
     restart: "no"
